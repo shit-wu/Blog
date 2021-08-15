@@ -2,19 +2,29 @@
   <div id="home">
     <el-row type="flex">
       <!-- 资料展示卡 -->
-      <el-col class="hidden-md-and-down" :xl="{span:5, offset:1}" :lg="{span:5, offset:1}">
+      <el-col
+        class="hidden-md-and-down"
+        :xl="{ span: 5, offset: 1 }"
+        :lg="{ span: 5, offset: 1 }"
+      >
         <MainShowCard class="home-show-card"></MainShowCard>
       </el-col>
       <!-- 博客内容 -->
-      <el-col :xl="{span:10}" :lg="{span:10}" :md="{span:15}" :sm="{span:23}" :xs="{span:23}">
+      <el-col
+        :xl="{ span: 10, offset: 1 }"
+        :lg="{ span: 10, offset: 1 }"
+        :md="{ span: 15, offset: 1 }"
+        :sm="{ span: 22, offset: 1 }"
+        :xs="{ span: 22, offset: 1 }"
+      >
         <MainTimeLine class="home-time-line"></MainTimeLine>
       </el-col>
       <!-- 左侧栏 -->
       <el-col
         class="hidden-sm-and-down"
-        :xl="{span:6, offset:1}"
-        :lg="{span:6, offset:1}"
-        :md="{span:7, offset:1}"
+        :xl="{ span: 6, offset: 1 }"
+        :lg="{ span: 6, offset: 1 }"
+        :md="{ span: 7, offset: 1 }"
       >
         <MainCategory class="home-category"></MainCategory>
       </el-col>
@@ -38,8 +48,8 @@ export default {
     MainTimeLine,
     MainCategory,
     Footer,
-    BackTop
-  }
+    BackTop,
+  },
 };
 </script>
 

@@ -1,108 +1,117 @@
 <template>
-  <div id="write">
-    <h2 class="tip">Write Your Blog Down</h2>
+  <div>
+    <div id="write">
+      <h2 class="tip">写点什么</h2>
 
-    <!-- 标题 -->
-    <div id="write-title">
-      <h2>标题</h2>
-      <el-input
-        class="title"
-        type="text"
-        placeholder="请输入内容"
-        v-model="blog.title"
-        maxlength="30"
-        suffix-icon="el-icon-edit"
-      ></el-input>
-      <el-divider></el-divider>
-    </div>
+      <!-- 标题 -->
+      <div id="write-title">
+        <h2>标题</h2>
+        <el-input
+          class="title"
+          type="text"
+          placeholder="请输入内容"
+          v-model="blog.title"
+          maxlength="30"
+          suffix-icon="el-icon-edit"
+        ></el-input>
+        <el-divider></el-divider>
+      </div>
 
-    <!-- 类型 -->
-    <div id="write-category">
-      <h2>类型</h2>
-      <div class="category">
-        <el-radio-group v-model="blog.category">
-          <el-radio :label="type[0]" name="type[0]"></el-radio>
-          <el-radio :label="type[1]" name="type[1]"></el-radio>
-          <el-radio :label="type[2]" name="type[2]"></el-radio>
-        </el-radio-group>
+      <!-- 类型 -->
+      <div id="write-category">
+        <h2>类型</h2>
+        <div class="category">
+          <el-radio-group v-model="blog.category">
+            <el-radio :label="type[0]" name="type[0]"></el-radio>
+            <el-radio :label="type[1]" name="type[1]"></el-radio>
+            <el-radio :label="type[2]" name="type[2]"></el-radio>
+          </el-radio-group>
+        </div>
+      </div>
+
+      <!-- 标签 -->
+      <div id="write-label">
+        <el-divider></el-divider>
+        <h2>标签</h2>
+        <el-input
+          class="label"
+          v-model="blog.tag"
+          placeholder="请输入标签名字"
+          suffix-icon="el-icon-price-tag"
+        ></el-input>
       </div>
     </div>
 
-    <!-- 标签 -->
-    <div id="write-label">
-      <el-divider></el-divider>
-      <h2>标签</h2>
-      <el-input
-        class="label"
-        v-model="blog.label"
-        placeholder="请输入标签名字"
-        suffix-icon="el-icon-price-tag"
-      ></el-input>
-    </div>
-
     <!-- 正文 -->
-    <div id="write-content">
-      <el-divider></el-divider>
-      <h2>正文</h2>
-      <div class="content">
-        <el-input
-          class="word"
-          type="textarea"
-          :autosize="{ minRows: 8, maxRows: 200}"
-          placeholder="请输入内容"
-          v-model="blog.content"
-        ></el-input>
-        <div class="button">
-          <el-button class="fix" type="warning" plain>修改</el-button>
-          <el-button class="commit" type="success" @click="commit" plain>提交</el-button>
-        </div>
+    <div id="editor">
+      <mavon-editor
+        style="height: 100%"
+        class="content"
+        v-model="blog.content"
+      ></mavon-editor>
+      <div class="button-wrapper">
+        <el-button type="success" class="submit-button" @click="commit"
+          >提交</el-button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { PostBlog } from "network/write";
+import { mavonEditor } from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
+import addArticle from "../../network/addArticle";
+import { getLocalStorage } from "../../store/localStorage";
+import store from "../../store/index";
 
 export default {
   name: "Write",
+  components: {
+    mavonEditor,
+  },
   data() {
     return {
       blog: {
         title: "",
         category: "",
-        label: "",
-        content: ""
+        tag: "",
+        content: "",
       },
       submtied: false,
-      type: ["开发日记", "小总结", "日常"]
+      type: ["开发日记", "小总结", "日常"],
     };
   },
   methods: {
     commit() {
-      PostBlog()
-        .then(data => {
-          data = this.blog;
-          console.log(data);
+      console.log(this.blog);
+      const userId = getLocalStorage("userId");
+      addArticle(this.blog, userId)
+        .then((res) => {
+          if (res.status == 200) {
+            this.blog.title = "";
+            this.blog.category = "";
+            this.blog.tag = "";
+            this.blog.content = "";
+            store.commit("setTotal", store.state.total + 1);
+          }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-      // PostBlog()
-      //   .then(res => {
-      //     console.log(res);
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //   });
+    },
+  },
+  beforeDestroy() {
+    if (this.blog.content) {
+      alert("当前表单还存在未提交的数据，确定要离开吗？");
     }
-  }
+  },
 };
 </script>
 
 <style scoped>
 #write {
-  width: 42%;
+  width: 54%;
   margin: 0 auto;
 }
 .tip {
@@ -120,19 +129,19 @@ export default {
   width: 100%;
   font-size: 20px;
 }
-.content {
-  width: 100%;
+#editor {
+  margin: 0 auto;
+  margin-top: 50px;
+  width: 90%;
+  height: 780px;
 }
-.word {
-  font-size: 18px;
+.button-wrapper {
+  text-align: center;
 }
-.button {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-around;
-}
-.item-button {
-  font-size: 20px;
+.submit-button {
+  padding-right: 30px;
+  padding-left: 30px;
+  margin-top: 50px;
+  margin-bottom: 100px;
 }
 </style>

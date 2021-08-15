@@ -1,8 +1,8 @@
 import { request } from "./request";
 
-export function PostBlog() {
+export default function getArticle() {
     return request({
-        url: "/articleget",
+        url: "/get",
         method: "GET",
     });
 }

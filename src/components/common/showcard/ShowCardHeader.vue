@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "ShowCardHeader"
+  name: "ShowCardHeader",
 };
 </script>
 

@@ -1,24 +1,29 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { getLocalStorage } from "../store/localStorage";
 
 const Home = () => import("views/home/Home");
 const Write = () => import("views/write/Write");
 const About = () => import("views/about/About");
-const MainShowCard = () =>
-    import("views/home/childComps/mainshowcard/MainShowCard");
-const MainTimeLine = () =>
-    import("views/home/childComps/maintimeline/MainTimeLine");
-const ArticleView = () => import("../views/Markdown/ArticleView");
+const ArticleView = () =>
+    import("../components/content/articleView/articleView");
+const Login = () => import("views/login/login");
 
 Vue.use(VueRouter);
 
 const routes = [
-    // 默认渲染
     {
         path: "",
         redirect: "/home",
     },
-    // Home的路由映射
+    {
+        path: "/login",
+        name: "login",
+        component: Login,
+        meta: {
+            title: "登录",
+        },
+    },
     {
         path: "/home",
         name: "home",
@@ -26,20 +31,7 @@ const routes = [
         meta: {
             title: "看博客",
         },
-        children: [
-            {
-                path: "mainshowcard",
-                name: "mainshowcard",
-                component: MainShowCard,
-            },
-            {
-                path: "maintimeline",
-                name: "maintimeline",
-                component: MainTimeLine,
-            },
-        ],
     },
-    // Write的路由映射
     {
         path: "/write",
         name: "write",
@@ -48,19 +40,21 @@ const routes = [
             title: "写博客",
         },
     },
-    // About的路由映射
     {
         path: "/about",
-        name: "abouyt",
+        name: "about",
         component: About,
         meta: {
             title: "关于我",
         },
     },
     {
-        path: "/article",
+        path: "/article/:article_id",
         name: "article",
         component: ArticleView,
+        meta: {
+            title: "文章",
+        },
     },
 ];
 
@@ -71,12 +65,23 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     //从from跳转到to
-    document.title = to.meta.title;
-    next();
+    const token = getLocalStorage("token");
+    // const token = null;
+    if (token) {
+        if (to.path === "/login") {
+            next({ path: "/" });
+        } else {
+            next();
+        }
+    } else {
+        if (to.path === "/login") {
+            next();
+        } else {
+            next({
+                path: "/login",
+            });
+        }
+    }
 });
-
-// router.afterEach((to, from, next) => {
-// 	console.log('afterEach');
-// })
 
 export default router;

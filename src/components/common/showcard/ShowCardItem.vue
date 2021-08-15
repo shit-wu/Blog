@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "ShowCardItem"
+  name: "ShowCardItem",
 };
 </script>
 
@@ -21,7 +21,6 @@ export default {
   font-size: 22px;
 }
 .item div :nth-child(-n + 2) {
-  margin-top: 25px;
   border-top: 1px solid #eceff2;
 }
 .item div :nth-child(2n-1) {

@@ -1,20 +1,17 @@
 <template>
   <div id="time-line">
-    <TimeLineItem/>
-    <Page class="timeline-page" :total="100"></Page>
+    <TimeLineItem />
   </div>
 </template>
 
 <script>
 import TimeLineItem from "./TimeLineItem";
-import Page from "./Page";
 
 export default {
   name: "TimeLine",
   components: {
     TimeLineItem,
-    Page
-  }
+  },
 };
 </script>
 

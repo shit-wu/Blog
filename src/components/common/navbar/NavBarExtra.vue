@@ -2,17 +2,24 @@
   <div id="nav-bar-extra">
     <div class="wrapper">
       <el-row type="flex">
-        <el-col class="hidden-md-and-up" :sm="{span:15,offset:1}" :xs="{span:15,offset:1}">
+        <el-col
+          class="hidden-md-and-up"
+          :sm="{ span: 15, offset: 1 }"
+          :xs="{ span: 15, offset: 1 }"
+        >
           <NavBarSearch></NavBarSearch>
         </el-col>
-        <el-col class="hidden-md-and-up" :sm="{span:2,offset:6}" :xs="{span:2,offset:5}">
+        <el-col
+          class="hidden-md-and-up"
+          :sm="{ span: 2, offset: 6 }"
+          :xs="{ span: 2, offset: 5 }"
+        >
           <el-popover
             placement="bottom-start"
             title="温馨提示"
             width="200"
             trigger="hover"
-            close-delay="0"
-            content="下次一定,下次一定"
+            content="用户信息"
           >
             <el-button slot="reference" class="avatar">
               <NavBarAvatar></NavBarAvatar>
@@ -32,8 +39,8 @@ export default {
   name: "NavBarExtra",
   components: {
     NavBarSearch,
-    NavBarAvatar
-  }
+    NavBarAvatar,
+  },
 };
 </script>
 

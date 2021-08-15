@@ -9,14 +9,13 @@
 export default {
   name: "NavBarItem",
   props: {
-    path: String
+    path: String,
   },
   methods: {
     itemClick() {
-      this.$router.push(this.path).catch(err => {});
-      console.log("this is item");
-    }
-  }
+      this.$router.push(this.path).catch((err) => {});
+    },
+  },
 };
 </script>
 

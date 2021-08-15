@@ -6,13 +6,12 @@
 
 <script>
 export default {
-  name: "ShowCard"
+  name: "ShowCard",
 };
 </script>
 
 <style scoped>
 #showcard {
-  /* width: 20%; */
   height: 400px;
   background-color: #ffffff;
   border-radius: 6%;
